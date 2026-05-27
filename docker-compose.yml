@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  # ===================== 后端服务 =====================
+  backend:
+    build: ./backend
+    container_name: todo-backend
+    environment:
+      # ⚠️ 下面 4 个改成你 ECS 上 MySQL 的实际账号密码！
+      - DB_HOST=host.docker.internal    # 指向宿主机
+      - DB_PORT=3306
+      - DB_USER=debian-sys-maint                   # ← 改成你的
+      - DB_PASSWORD=rAxoFlGguxSBl8e1               # ← 改成你的
+      - DB_NAME=todo_app                # ← 改成你的库名
+    extra_hosts:
+      - "host.docker.internal:host-gateway"  # Linux Docker 访问宿主机
+    restart: always
+
+  # ===================== 前端服务 =====================
+  frontend:
+    build: ./frontend
+    container_name: todo-frontend
+    ports:
+      - "80:80"           # 宿主机80 → 容器80
+    depends_on:
+      - backend
+    restart: always
