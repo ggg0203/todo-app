@@ -9,8 +9,8 @@ services:
       # ⚠️ 下面 4 个改成你 ECS 上 MySQL 的实际账号密码！
       - DB_HOST=host.docker.internal    # 指向宿主机
       - DB_PORT=3306
-      - DB_USER=debian-sys-maint                   # ← 改成你的
-      - DB_PASSWORD=rAxoFlGguxSBl8e1               # ← 改成你的
+      - DB_USER=root
+      - DB_PASSWORD=root
       - DB_NAME=todo_app                # ← 改成你的库名
     extra_hosts:
       - "host.docker.internal:host-gateway"  # Linux Docker 访问宿主机
