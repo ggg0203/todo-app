@@ -38,13 +38,14 @@ jobs:
 
       # ⑤ SSH 到 ECS，拉取新镜像并重启
       - name: Deploy to ECS
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || '22' }}
           script: |
-            cd ~/todo-app
+            cd ~/todo-app || (git clone https://github.com/ggg0203/todo-app.git ~/todo-app && cd ~/todo-app)
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
