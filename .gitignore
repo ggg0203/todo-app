@@ -21,3 +21,6 @@ Thumbs.db
 
 # Docker
 *.log
+
+# SSH keys (never commit!)
+.ssh/
