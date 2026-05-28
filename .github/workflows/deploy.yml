@@ -42,10 +42,10 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT || '22' }}
           script: |
-            cd ~/todo-app || (git clone https://github.com/ggg0203/todo-app.git ~/todo-app && cd ~/todo-app)
+            cd ~/todo-app
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
