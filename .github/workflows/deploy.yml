@@ -36,16 +36,13 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/todo-app-frontend:latest
 
-      # ⑤ SSH 到 ECS，拉取新镜像并重启
+      # ⑤ 原生命令 SSH 到 ECS，拉取新镜像并重启
       - name: Deploy to ECS
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT || '22' }}
-          script: |
-            cd ~/todo-app
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq sshpass > /dev/null 2>&1
+          sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT || '22' }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} '
+            cd ~/todo-app || { echo "ERROR: ~/todo-app not found!"; exit 1; }
             docker compose pull
             docker compose up -d --remove-orphans
             docker image prune -f
+          '
